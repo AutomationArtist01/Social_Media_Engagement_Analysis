@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- ===================== Hero ===================== -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Turn social data into <span class="grad">smarter posts</span>.</h1>
+    <p class="lead">
+      SocialPulse analyses thousands of posts to reveal what really drives
+      engagement — then predicts how your next post will perform before you hit
+      publish.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="{{ url_for('predict') }}">Predict Engagement</a>
+      <a class="btn btn-ghost" href="{{ url_for('dashboard') }}">Explore the Data</a>
+    </div>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+</section>
+
+{% if error %}
+  <div class="alert alert-warn">
+    <strong>Heads up:</strong> {{ error }}
+  </div>
+{% endif %}
+
+{% if summary %}
+<!-- ===================== Headline metric cards ===================== -->
+<section class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-value">{{ "{:,}".format(summary.total_posts) }}</div>
+    <div class="stat-label">Posts Analysed</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ summary.avg_engagement }}%</div>
+    <div class="stat-label">Avg Engagement Rate</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ summary.platforms }}</div>
+    <div class="stat-label">Platforms Tracked</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ summary.best_platform }}</div>
+    <div class="stat-label">Top Platform</div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===================== Feature highlights ===================== -->
+<section class="features">
+  <h2 class="section-title">What you can do</h2>
+  <div class="feature-grid">
+    <article class="feature">
+      <h3>Explore Engagement</h3>
+      <p>Interactive charts break down engagement by platform, post type, hour, day and sentiment.</p>
+    </article>
+    <article class="feature">
+      <h3>Predict Performance</h3>
+      <p>A Random Forest model estimates the engagement rate of a post from its attributes.</p>
+    </article>
+    <article class="feature">
+      <h3>Actionable Insights</h3>
+      <p>Data-driven tips on the best time, format and platform to publish your content.</p>
+    </article>
+    <article class="feature">
+      <h3>Transparent Model</h3>
+      <p>See the exact metrics and feature importances behind every prediction.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== How it works ===================== -->
+<section class="how">
+  <h2 class="section-title">How it works</h2>
+  <ol class="steps">
+    <li><span class="step-num">1</span> We collect post attributes — platform, format, timing, hashtags &amp; more.</li>
+    <li><span class="step-num">2</span> EDA surfaces the patterns that correlate with high engagement.</li>
+    <li><span class="step-num">3</span> A trained ML model learns those patterns from historical data.</li>
+    <li><span class="step-num">4</span> You get an instant engagement prediction for any new post.</li>
+  </ol>
+</section>
+{% endblock %}

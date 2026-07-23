@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{{ app_name }}{% endblock %} · {{ app_name }}</title>
+  <meta name="description" content="Analyse and predict social media engagement with machine learning." />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+</head>
+<body>
+  <!-- ===================== Navbar ===================== -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-dot"></span> {{ app_name }}
+      </a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+      <label for="nav-toggle" class="nav-burger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </label>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}" class="{{ 'active' if request.path == '/' }}">Home</a>
+        <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.path == '/dashboard' }}">Dashboard</a>
+        <a href="{{ url_for('predict') }}" class="{{ 'active' if request.path == '/predict' }}">Predict</a>
+        <a href="{{ url_for('performance') }}" class="{{ 'active' if request.path == '/performance' }}">Performance</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================== Main content ===================== -->
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="muted">Built with Flask, scikit-learn, pandas &amp; seaborn.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

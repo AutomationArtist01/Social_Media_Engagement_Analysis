@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Model Performance{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>Model Performance</h1>
+  <p class="lead">How well the engagement-prediction model performs on held-out data.</p>
+</section>
+
+{% if not metrics %}
+  <div class="alert alert-warn">
+    <strong>No metrics found.</strong> Train the model first with
+    <code>python models/train_model.py</code>.
+  </div>
+{% else %}
+
+<!-- Metric cards -->
+<section class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-value">{{ metrics.r2 }}</div>
+    <div class="stat-label">R² Score</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ metrics.rmse }}</div>
+    <div class="stat-label">RMSE</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ metrics.mae }}</div>
+    <div class="stat-label">MAE</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ "{:,}".format(metrics.n_train + metrics.n_test) }}</div>
+    <div class="stat-label">Samples</div>
+  </div>
+</section>
+
+<div class="perf-layout">
+  <!-- Model summary -->
+  <section class="card">
+    <h2>Model Summary</h2>
+    <table class="data-table kv-table">
+      <tbody>
+        <tr><th>Algorithm</th><td>{{ metrics.model }}</td></tr>
+        <tr><th>Training samples</th><td>{{ "{:,}".format(metrics.n_train) }}</td></tr>
+        <tr><th>Testing samples</th><td>{{ "{:,}".format(metrics.n_test) }}</td></tr>
+        <tr><th>Target mean</th><td>{{ metrics.target_mean }}%</td></tr>
+        <tr><th>R² (coeff. of determination)</th><td>{{ metrics.r2 }}</td></tr>
+        <tr><th>RMSE</th><td>{{ metrics.rmse }}</td></tr>
+        <tr><th>MAE</th><td>{{ metrics.mae }}</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">
+      An R² of {{ metrics.r2 }} means the model explains roughly
+      {{ (metrics.r2 * 100)|round(0)|int }}% of the variance in engagement rate.
+    </p>
+  </section>
+
+  <!-- Feature importances -->
+  <section class="card">
+    <h2>Top Feature Importances</h2>
+    <div class="importance-list">
+      {% set max_imp = metrics.feature_importances[0].importance %}
+      {% for feat in metrics.feature_importances %}
+        <div class="importance-row">
+          <span class="importance-name" title="{{ feat.feature }}">{{ feat.feature }}</span>
+          <div class="importance-bar-track">
+            <div class="importance-bar" style="width: {{ (feat.importance / max_imp * 100)|round(1) }}%;"></div>
+          </div>
+          <span class="importance-val">{{ feat.importance }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+{% endif %}
+{% endblock %}

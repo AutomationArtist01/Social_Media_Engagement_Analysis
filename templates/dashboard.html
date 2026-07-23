@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>Engagement Dashboard</h1>
+  <p class="lead">Exploratory analysis of the social-media dataset.</p>
+</section>
+
+{% if error %}
+  <div class="alert alert-warn"><strong>Cannot load data:</strong> {{ error }}</div>
+{% else %}
+
+<!-- Summary cards -->
+<section class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-value">{{ "{:,}".format(summary.total_posts) }}</div>
+    <div class="stat-label">Total Posts</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ summary.avg_engagement }}%</div>
+    <div class="stat-label">Avg Engagement</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ summary.max_engagement }}%</div>
+    <div class="stat-label">Peak Engagement</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ "{:,}".format(summary.total_likes) }}</div>
+    <div class="stat-label">Total Likes</div>
+  </div>
+</section>
+
+<!-- Insights -->
+<section class="card insights-card">
+  <h2>Key Insights</h2>
+  <ul class="insights">
+    {% for tip in insights %}
+      <li>{{ tip }}</li>
+    {% endfor %}
+  </ul>
+</section>
+
+<!-- Charts grid -->
+<section class="chart-grid">
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.engagement_by_platform) }}" alt="Engagement by platform" loading="lazy" />
+    <figcaption>Average engagement by platform</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.engagement_by_post_type) }}" alt="Engagement by post type" loading="lazy" />
+    <figcaption>Average engagement by post type</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.engagement_by_hour) }}" alt="Engagement by hour" loading="lazy" />
+    <figcaption>Engagement across the day</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.engagement_by_day) }}" alt="Engagement by day" loading="lazy" />
+    <figcaption>Engagement by day of week</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.engagement_distribution) }}" alt="Engagement distribution" loading="lazy" />
+    <figcaption>Distribution of engagement rate</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.hashtags_vs_engagement) }}" alt="Hashtags vs engagement" loading="lazy" />
+    <figcaption>Hashtag count vs engagement</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.sentiment_pie) }}" alt="Sentiment breakdown" loading="lazy" />
+    <figcaption>Sentiment breakdown</figcaption>
+  </figure>
+  <figure class="chart-card">
+    <img src="{{ url_for('static', filename=charts.correlation_heatmap) }}" alt="Correlation heatmap" loading="lazy" />
+    <figcaption>Correlation heatmap</figcaption>
+  </figure>
+</section>
+
+<!-- Platform table -->
+<section class="card">
+  <h2>Platform Breakdown</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Platform</th>
+          <th>Posts</th>
+          <th>Avg Engagement (%)</th>
+          <th>Avg Likes</th>
+          <th>Avg Followers</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in table %}
+        <tr>
+          <td>{{ row.platform }}</td>
+          <td>{{ "{:,}".format(row.posts) }}</td>
+          <td>{{ row.avg_engagement }}</td>
+          <td>{{ "{:,}".format(row.avg_likes) }}</td>
+          <td>{{ "{:,}".format(row.avg_followers) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% endif %}
+{% endblock %}

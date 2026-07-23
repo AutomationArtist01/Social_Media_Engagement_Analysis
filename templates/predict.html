@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Predict{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <h1>Predict Engagement Rate</h1>
+  <p class="lead">Describe a post and the model will estimate its engagement rate.</p>
+</section>
+
+<div class="predict-layout">
+  <!-- ===================== Form ===================== -->
+  <section class="card form-card">
+    <form method="POST" action="{{ url_for('predict') }}" class="predict-form" id="predict-form">
+      <div class="form-grid">
+        <div class="field">
+          <label for="platform">Platform</label>
+          <select id="platform" name="platform" required>
+            {% for p in platforms %}
+              <option value="{{ p }}" {{ 'selected' if form_values.get('platform') == p }}>{{ p }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="post_type">Post Type</label>
+          <select id="post_type" name="post_type" required>
+            {% for t in post_types %}
+              <option value="{{ t }}" {{ 'selected' if form_values.get('post_type') == t }}>{{ t }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="topic">Topic</label>
+          <select id="topic" name="topic" required>
+            {% for t in topics %}
+              <option value="{{ t }}" {{ 'selected' if form_values.get('topic') == t }}>{{ t }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="day_of_week">Day of Week</label>
+          <select id="day_of_week" name="day_of_week" required>
+            {% for d in days %}
+              <option value="{{ d }}" {{ 'selected' if form_values.get('day_of_week') == d }}>{{ d }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="sentiment">Caption Sentiment</label>
+          <select id="sentiment" name="sentiment" required>
+            {% for s in sentiments %}
+              <option value="{{ s }}" {{ 'selected' if form_values.get('sentiment') == s }}>{{ s }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="post_hour">Post Hour (0–23)</label>
+          <input type="number" id="post_hour" name="post_hour" min="0" max="23"
+                 value="{{ form_values.get('post_hour', 18) }}" required />
+        </div>
+
+        <div class="field">
+          <label for="followers">Followers</label>
+          <input type="number" id="followers" name="followers" min="1" max="100000000"
+                 value="{{ form_values.get('followers', 10000) }}" required />
+        </div>
+
+        <div class="field">
+          <label for="hashtags_count">Hashtags</label>
+          <input type="number" id="hashtags_count" name="hashtags_count" min="0" max="60"
+                 value="{{ form_values.get('hashtags_count', 10) }}" required />
+        </div>
+
+        <div class="field">
+          <label for="caption_length">Caption Length (chars)</label>
+          <input type="number" id="caption_length" name="caption_length" min="0" max="5000"
+                 value="{{ form_values.get('caption_length', 120) }}" required />
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Predict Engagement</button>
+    </form>
+  </section>
+
+  <!-- ===================== Result ===================== -->
+  <section class="card result-card">
+    {% if error %}
+      <div class="alert alert-error"><strong>Error:</strong> {{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+      <div class="result-inner band-{{ result.band|lower }}">
+        <div class="result-label">Predicted Engagement Rate</div>
+        <div class="result-value">{{ result.engagement_rate }}%</div>
+        <div class="result-band">Engagement Level: <strong>{{ result.band }}</strong></div>
+        <div class="gauge">
+          <div class="gauge-fill" style="width: {{ [result.engagement_rate * 12, 100]|min }}%;"></div>
+        </div>
+        <p class="result-note">
+          Based on the attributes you entered, this post is expected to reach a
+          <strong>{{ result.band|lower }}</strong> engagement level relative to the dataset.
+        </p>
+      </div>
+    {% else %}
+      <div class="result-placeholder">
+        <p>Fill in the form and hit <strong>Predict</strong> to see the estimated engagement rate.</p>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
