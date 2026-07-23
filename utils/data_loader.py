@@ -1,17 +1,7 @@
-"""
-utils/data_loader.py
-====================
-Responsible for reading the raw CSV into a pandas DataFrame and performing
-light, defensive cleaning so the rest of the app can assume tidy data.
-"""
-
 from __future__ import annotations
-
 import os
 import pandas as pd
-
 import config
-
 
 class DatasetNotFoundError(FileNotFoundError):
     """Raised when the expected dataset CSV is missing."""

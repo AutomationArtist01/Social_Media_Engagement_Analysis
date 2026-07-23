@@ -1,26 +1,5 @@
-"""
-app.py
-======
-Flask entry point for the Social Media Engagement Analysis web app.
-
-Routes
-------
-GET  /            Home / landing page with headline metrics
-GET  /dashboard   EDA dashboard (charts, tables, insights)
-GET  /predict     Prediction form
-POST /predict     Run the model on submitted inputs and show the result
-GET  /performance Model performance metrics & feature importances
-GET  /api/predict JSON prediction endpoint (bonus, for programmatic use)
-
-Run:
-    python app.py
-Then open http://127.0.0.1:5000
-"""
-
 from __future__ import annotations
-
 import os
-
 from flask import (
     Flask,
     jsonify,
@@ -125,6 +104,12 @@ def performance():
     """Display saved model metrics and feature importances."""
     metrics = load_metrics()
     return render_template("performance.html", metrics=metrics)
+
+
+@app.route("/contact")
+def contact():
+    """Static contact page."""
+    return render_template("contact.html")
 
 
 # ---------------------------------------------------------------------------

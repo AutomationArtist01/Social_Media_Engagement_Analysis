@@ -1,20 +1,9 @@
-"""
-utils/predictor.py
-==================
-Loads the trained pipeline once (lazily, and cached) and exposes a clean
-``predict_engagement`` function that accepts a plain dict of raw feature
-values and returns a structured prediction result.
-"""
-
 from __future__ import annotations
-
 import json
 import os
 from functools import lru_cache
-
 import joblib
 import pandas as pd
-
 import config
 
 

@@ -1,19 +1,5 @@
-"""
-utils/eda.py
-============
-Exploratory Data Analysis helpers. This module produces:
-
-* A set of matplotlib/seaborn charts saved as PNGs under ``static/images``.
-* Small aggregated tables (as list-of-dicts) that the templates render.
-
-Charts are regenerated on demand (see ``generate_all_charts``) so the
-dashboard always reflects the current dataset.
-"""
-
 from __future__ import annotations
-
 import os
-
 import matplotlib
 
 # Use a non-interactive backend so charts render on a headless server.

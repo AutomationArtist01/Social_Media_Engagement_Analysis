@@ -1,17 +1,5 @@
-"""
-test_app.py
-===========
-Lightweight smoke tests covering the data pipeline, model prediction and every
-Flask route. Uses only the standard library's ``unittest`` so there are no
-extra test dependencies.
-
-Run:
-    python -m unittest test_app -v
-"""
-
 import os
 import unittest
-
 import config
 from app import app
 from utils import data_loader
@@ -113,6 +101,9 @@ class RouteTests(unittest.TestCase):
 
     def test_performance(self):
         self.assertEqual(self.client.get("/performance").status_code, 200)
+
+    def test_contact(self):
+        self.assertEqual(self.client.get("/contact").status_code, 200)
 
     def test_api_predict(self):
         resp = self.client.post(
