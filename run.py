@@ -1,14 +1,3 @@
-"""
-run.py
-======
-One-shot bootstrap + launcher. Ensures the dataset and trained model exist,
-then starts the Flask development server. Convenient for first-time setup:
-
-    python run.py
-
-It is idempotent: existing artefacts are reused, missing ones are built.
-"""
-
 import os
 import subprocess
 import sys

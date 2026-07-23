@@ -1,11 +1,3 @@
-"""
-config.py
-=========
-Central configuration for the Social Media Engagement Analysis project.
-Keeping paths and constants in one place avoids magic strings scattered
-across the codebase.
-"""
-
 import os
 
 # Absolute path to the project root (directory that contains this file).
